@@ -23,6 +23,15 @@ public:
             _linkType->SetRole(PDC::LinkType::BASE);
             _linkType->SetJointAngle(0.2);
             _linkType->SetGeometrySource(PDC::GeometrySource("geometry.3ds","objname"));
+
+            double geometryPose[4][4] = {
+                                            { 1.0, 2.0, 3.0, 4.0 },
+                                            { 5.0, 6.0, 7.0, 8.0 },
+                                            { 9.0, 10.0, 11.0, 12.0 },
+                                            { 13.0, 14.0, 15.0, 16.0 }
+                                        };
+            _linkType->SetGeometryPose(geometryPose);
+
         }
         return _linkType;
     }

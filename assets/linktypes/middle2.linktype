@@ -1,0 +1,10 @@
+{
+  "id":"middle2",
+  "type":"revolute",
+  "role":"link",
+  "twist" : 0.0,
+  "length": 570.0,
+  "geometry_source": { "file_path":"robotarm.3ds", "object_name":"V-Shaft" },
+  "offset": 0.0 
+}
+

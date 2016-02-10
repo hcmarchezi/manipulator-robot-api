@@ -12,6 +12,7 @@ class LinkTypeRepository
 public:
     static void Add(PDC::LinkType* linkType);
     static PDC::LinkType* Get(std::string linkTypeId);
+    static void Clear();
 
 protected:
     LinkTypeRepository() { }

@@ -27,7 +27,12 @@ PDC::LinkType* DMC::LinkTypePersistence::Load(const std::string& linkTypeId)
 {        
     std::string fileName;
     std::string id = linkTypeId;
-    GenerateFileNameFromLinkTypeId(id,fileName);
+    GenerateFileNameFromLinkTypeId(id,fileName);    
+    return LoadFromFile(fileName);
+}
+
+PDC::LinkType* DMC::LinkTypePersistence::LoadFromFile(const std::string& fileName)
+{
     std::string json = _fileHelper.Read(fileName);
     jsonxx::Object obj;
     obj.parse(json);

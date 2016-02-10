@@ -33,6 +33,8 @@ public:
     PDC::GeometrySource GetGeometrySource();
     void SetGeometry(PDC::Geometry* geometry);
     PDC::Geometry* GetGeometry();
+    void SetGeometryPose(double matrix[4][4]);
+    void GetGeometryPose(double (* matrix)[4][4]) const;
     virtual void CalculateFrame(double jointMove,double (* frame)[4][4]) = 0;
     virtual std::string GetJointType() = 0;
 
@@ -43,6 +45,7 @@ protected:
     std::string _role;
     PDC::GeometrySource _geometrySource;
     PDC::Geometry* _geometry;
+    double _geometryPose[4][4];
 };
 
 }

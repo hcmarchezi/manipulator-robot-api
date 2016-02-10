@@ -13,6 +13,7 @@ class LinkTypePersistence
 public:
     static void Save(PDC::LinkType* linkType);
     static PDC::LinkType* Load(const std::string& linkTypeId);
+    static PDC::LinkType* LoadFromFile(const std::string& fileName);
     static void Remove(PDC::LinkType* linkType);
 
 protected:

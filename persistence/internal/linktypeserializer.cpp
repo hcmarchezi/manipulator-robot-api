@@ -22,6 +22,15 @@ jsonxx::Object* LinkTypeSerializer::Serialize(PDC::LinkType* linkType)
     geometrySource << "object_name" << linkType->GetGeometrySource().GetObjectName();
     *linkTypeJson << "geometry_source" << geometrySource;
 
+    jsonxx::Array geometryPose;
+    double pose[4][4];
+    linkType->GetGeometryPose(&pose);
+    geometryPose << pose[0][0] << pose[0][1] << pose[0][2] << pose[0][3];
+    geometryPose << pose[1][0] << pose[1][1] << pose[1][2] << pose[1][3];
+    geometryPose << pose[2][0] << pose[2][1] << pose[2][2] << pose[2][3];
+    geometryPose << pose[3][0] << pose[3][1] << pose[3][2] << pose[3][3];
+    *linkTypeJson << "geometry_pose" << geometryPose;
+
     std::string jointType = linkType->GetJointType();
 
     if (jointType == "prismatic")
@@ -61,6 +70,17 @@ PDC::LinkType* LinkTypeSerializer::Deserialize(jsonxx::Object* linkTypeJson)
     {
         offset = linkTypeJson->get<jsonxx::Number>("offset");
     }
+    double pose[4][4];
+    jsonxx::Array jsonPose = linkTypeJson->get<jsonxx::Array>("geometry_pose");
+    unsigned int index=0;
+    for(unsigned int i=0; i < 4; i++)
+    {
+        for (unsigned int j=0; j < 4; j++)
+        {
+            index = i*4+j;
+            pose[i][j] = jsonPose.get<jsonxx::Number>(index);
+        }
+    }
 
     PDC::LinkType* linkType = NULL;
     if (type == "prismatic")
@@ -76,7 +96,8 @@ PDC::LinkType* LinkTypeSerializer::Deserialize(jsonxx::Object* linkTypeJson)
     linkType->SetRole(StringToLinkTypeRole(role));
     linkType->SetTwist(twist);
     linkType->SetLength(length);
-    linkType->SetGeometrySource(PDC::GeometrySource(filePath.c_str(),objectName.c_str()));
+    linkType->SetGeometrySource(PDC::GeometrySource(filePath.c_str(),objectName.c_str()));    
+    linkType->SetGeometryPose(pose);
 
     return linkType;
 }

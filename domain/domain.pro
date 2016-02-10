@@ -28,7 +28,8 @@ SOURCES += domain.cpp \
     RevoluteLinkType.cpp \
     Robot.cpp \
     RobotPosition.cpp \
-    trajectory.cpp
+    trajectory.cpp \
+    matrix.cpp
 
 HEADERS += domain.h \
     Face.h \
@@ -48,4 +49,5 @@ HEADERS += domain.h \
     Robot.h \
     RobotPosition.h \
     trajectory.h \
-    graphicobject.h
+    graphicobject.h \
+    matrix.h

@@ -1,0 +1,10 @@
+{
+  "id":"base1",
+  "type":"revolute",
+  "role":"base",
+  "twist" : 0.0,
+  "length": 440.0,
+  "geometry_source": { "file_path":"robotarm.3ds", "object_name":"Base" },
+  "offset": 0.0 
+}
+

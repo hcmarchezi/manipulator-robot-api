@@ -5,6 +5,7 @@
 #include "RevoluteLinkType.h"
 #include "PrismaticLinkType.h"
 #include "trajectory.h"
+#include "linktyperepository.h"
 
 #include <fstream>
 #include <sstream>
@@ -23,12 +24,7 @@
         { "time_instant":5, "links_positions":[ { "posiiton": 0.02, "velocity":0.0 }, { "position": 0.80, "velocity":0.02 } ] },
         { "time_instant":9, "links_positions":[ { "position": -0.2, "velocity":0.0 }, { "position": 0.50, "velocity":-0.01 } ] }
     ]
-  },
-  "link_types" : [
-        { "id":"robot-base", "role":"base",        "joint_type":"revolute",  "length":2.5, "twist":0.1, "joint_offset":0.7, "geometry_source":"robot.3ds:base" },
-        { "id":"robot-arm",  "role":"link",        "joint_type":"revolute",  "length":3.0, "twist":0.3, "joint_offset":0.5, "geometry_source":"robot.3ds:arm" },
-        { "id":"robot-tool", "role":"end-effector","joint_type":"prismatic", "length":0.7, "twist":0.2, "joint_angle":0.8,  "geometry_source":"robot.3ds:welding" }
-  ]
+  }
 }
 
 */
@@ -55,19 +51,8 @@ public:
 
     PDC::Robot* createCompleteRobot()
     {
-        PDC::PrismaticLinkType* linkType1 = new PDC::PrismaticLinkType("prismatic1");
-        linkType1->SetGeometrySource(PDC::GeometrySource("./prismatic1.3ds","object1"));
-        linkType1->SetLength(8.0);
-        linkType1->SetJointAngle(0.5);
-        linkType1->SetTwist(0.25);
-        linkType1->SetRole(PDC::LinkType::LINK);
-
-        PDC::RevoluteLinkType*  linkType2 = new PDC::RevoluteLinkType("revolute1");
-        linkType2->SetGeometrySource(PDC::GeometrySource("./revolute1.3ds","robot2"));
-        linkType2->SetLength(10.0);
-        linkType2->SetOffset(1.0);
-        linkType2->SetTwist(0.5);
-        linkType2->SetRole(PDC::LinkType::END_EFFECTOR);
+        PDC::LinkType* linkType1 = PDC::LinkTypeRepository::Get("prismatic1");
+        PDC::LinkType* linkType2 = PDC::LinkTypeRepository::Get("revolute1");
 
         PDC::Robot* robot = new PDC::Robot();
         robot->AppendLink(new PDC::Link(linkType1));
@@ -139,10 +124,33 @@ public:
         return expectedJson;
     }
 
+protected:
+    virtual void SetUp( )
+    {
+        PDC::PrismaticLinkType* linkType1 = new PDC::PrismaticLinkType("prismatic1");
+        linkType1->SetGeometrySource(PDC::GeometrySource("./prismatic1.3ds","object1"));
+        linkType1->SetLength(8.0);
+        linkType1->SetJointAngle(0.5);
+        linkType1->SetTwist(0.25);
+        linkType1->SetRole(PDC::LinkType::LINK);
+
+        PDC::LinkTypeRepository::Add(linkType1);
+
+        PDC::RevoluteLinkType*  linkType2 = new PDC::RevoluteLinkType("revolute1");
+        linkType2->SetGeometrySource(PDC::GeometrySource("./revolute1.3ds","robot2"));
+        linkType2->SetLength(10.0);
+        linkType2->SetOffset(1.0);
+        linkType2->SetTwist(0.5);
+        linkType2->SetRole(PDC::LinkType::END_EFFECTOR);
+
+        PDC::LinkTypeRepository::Add(linkType2);
+    }
+
+    virtual void TearDown( )
+    {
+        PDC::LinkTypeRepository::Clear();
+    }
 };
-
-
-
 
 TEST_F(RobotPersistenceTest,serializeEmptyRobotAsJSON)
 {

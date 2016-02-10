@@ -10,13 +10,13 @@ namespace DMC
 class RobotPersistence
 {
 public:
-    static void Save(PDC::Robot* robot) { }
-    static PDC::Robot* Load(std::string robotId) { return NULL; }
-    static void Remove(PDC::Robot* robot) { }
+    static void Save(PDC::Robot* robot, const std::string& filename);
+    static PDC::Robot* Load(const std::string& filename);
+    static void Remove(const std::string& filename);
 
 protected:
     static void Serialize(PDC::Robot* robot, std::string *robotJson);
-    static void Deserialize(std::string json,PDC::Robot** robot);
+    static void Deserialize(const std::string& json,PDC::Robot** robot);
 };
 }
 
