@@ -7,4 +7,7 @@ The API lets the developer to:
 * Describe robot trajectories as a series of initial-to-end joint positions in time for each joint
 * Given the trajectory above generate a polynomial trajectory to move the joints
 
+A sample application (see picture below) was built to illustrate its usage and it can be found in application folder in the repository.
+![Alt text](https://dl.dropboxusercontent.com/u/23592712/CDN/robotbuilder/robot-manipulator-app.png "Sample application")
+
 
